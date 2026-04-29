@@ -1,22 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import {
-    Drawer,
-    Fab,
-    FormControl,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    Radio,
-    RadioGroup,
-    Slider,
-    Tooltip,
-    Typography
-} from '@mui/material';
-import { IconSettings } from '../../../node_modules/@tabler/icons-react';
+// carbon
+import { Button, Slider, RadioButtonGroup, RadioButton, Layer } from '@carbon/react';
+import { Settings } from '@carbon/icons-react';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -35,7 +22,6 @@ function valueText(value) {
 // ==============================|| LIVE CUSTOMIZATION ||============================== //
 
 const Customization = () => {
-    const theme = useTheme();
     const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
 
@@ -47,8 +33,8 @@ const Customization = () => {
 
     // state - border radius
     const [borderRadius, setBorderRadius] = useState(customization.borderRadius);
-    const handleBorderRadius = (event, newValue) => {
-        setBorderRadius(newValue);
+    const handleBorderRadius = (event) => {
+        setBorderRadius(event.value);
     };
 
     useEffect(() => {
@@ -91,132 +77,91 @@ const Customization = () => {
     return (
         <>
             {/* toggle button */}
-            <Tooltip title="Live Customize">
-                <Fab
-                    component="div"
-                    onClick={handleToggle}
-                    size="medium"
-                    variant="circular"
-                    color="secondary"
-                    sx={{
-                        borderRadius: 0,
-                        borderTopLeftRadius: '50%',
-                        borderBottomLeftRadius: '50%',
-                        borderTopRightRadius: '50%',
-                        borderBottomRightRadius: '4px',
-                        top: '25%',
-                        position: 'fixed',
-                        right: 10,
-                        zIndex: theme.zIndex.speedDial
-                    }}
-                >
-                    <AnimateButton type="rotate">
-                        <IconButton color="inherit" size="large" disableRipple>
-                            <IconSettings />
-                        </IconButton>
-                    </AnimateButton>
-                </Fab>
-            </Tooltip>
-
-            <Drawer
-                anchor="right"
-                onClose={handleToggle}
-                open={open}
-                PaperProps={{
-                    sx: {
-                        width: 280
-                    }
+            <Button
+                kind="secondary"
+                size="md"
+                hasIconOnly
+                renderIcon={Settings}
+                iconDescription="Live Customize"
+                onClick={handleToggle}
+                style={{
+                    position: 'fixed',
+                    right: '10px',
+                    top: '25%',
+                    zIndex: 1000,
+                    borderRadius: '50% 50% 50% 4px'
                 }}
             >
-                <PerfectScrollbar component="div">
-                    <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
-                        <Grid item xs={12}>
-                            {/* font family */}
-                            <SubCard title="Font Family">
-                                <FormControl>
-                                    <RadioGroup
-                                        aria-label="font-family"
-                                        value={fontFamily}
-                                        onChange={(e) => setFontFamily(e.target.value)}
-                                        name="row-radio-buttons-group"
+                <AnimateButton type="rotate">
+                    <Settings size={24} />
+                </AnimateButton>
+            </Button>
+
+            {open && (
+                <Layer
+                    style={{
+                        position: 'fixed',
+                        right: 0,
+                        top: 0,
+                        width: '280px',
+                        height: '100vh',
+                        backgroundColor: 'white',
+                        zIndex: 1200,
+                        boxShadow: '-2px 0 8px rgba(0,0,0,0.1)'
+                    }}
+                >
+                    <PerfectScrollbar component="div">
+                        <div style={{ padding: '24px' }}>
+                            <div style={{ marginBottom: '24px' }}>
+                                {/* font family */}
+                                <SubCard title="Font Family">
+                                    <RadioButtonGroup
+                                        legendText=""
+                                        name="font-family"
+                                        valueSelected={fontFamily}
+                                        onChange={(value) => setFontFamily(value)}
                                     >
-                                        <FormControlLabel
-                                            value="Roboto"
-                                            control={<Radio />}
-                                            label="Roboto"
-                                            sx={{
-                                                '& .MuiSvgIcon-root': { fontSize: 28 },
-                                                '& .MuiFormControlLabel-label': {
-                                                    color: theme.palette.grey[900]
-                                                }
-                                            }}
-                                        />
-                                        <FormControlLabel
-                                            value="Poppins"
-                                            control={<Radio />}
-                                            label="Poppins"
-                                            sx={{
-                                                '& .MuiSvgIcon-root': { fontSize: 28 },
-                                                '& .MuiFormControlLabel-label': {
-                                                    color: theme.palette.grey[900]
-                                                }
-                                            }}
-                                        />
-                                        <FormControlLabel
-                                            value="Inter"
-                                            control={<Radio />}
-                                            label="Inter"
-                                            sx={{
-                                                '& .MuiSvgIcon-root': { fontSize: 28 },
-                                                '& .MuiFormControlLabel-label': {
-                                                    color: theme.palette.grey[900]
-                                                }
-                                            }}
-                                        />
-                                    </RadioGroup>
-                                </FormControl>
-                            </SubCard>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {/* border radius */}
-                            <SubCard title="Border Radius">
-                                <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
-                                    <Grid item>
-                                        <Typography variant="h6" color="secondary">
-                                            4px
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Slider
-                                            size="small"
-                                            value={borderRadius}
-                                            onChange={handleBorderRadius}
-                                            getAriaValueText={valueText}
-                                            valueLabelDisplay="on"
-                                            aria-labelledby="discrete-slider-small-steps"
-                                            marks
-                                            step={2}
-                                            min={4}
-                                            max={24}
-                                            color="secondary"
-                                            sx={{
-                                                '& .MuiSlider-valueLabel': {
-                                                    color: 'secondary.light'
-                                                }
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="h6" color="secondary">
-                                            24px
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </SubCard>
-                        </Grid>
-                    </Grid>
-                </PerfectScrollbar>
-            </Drawer>
+                                        <RadioButton labelText="Roboto" value="Roboto" id="radio-roboto" />
+                                        <RadioButton labelText="Poppins" value="Poppins" id="radio-poppins" />
+                                        <RadioButton labelText="Inter" value="Inter" id="radio-inter" />
+                                    </RadioButtonGroup>
+                                </SubCard>
+                            </div>
+                            <div>
+                                {/* border radius */}
+                                <SubCard title="Border Radius">
+                                    <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                        <span style={{ fontSize: '14px', fontWeight: 600, color: '#666' }}>4px</span>
+                                        <div style={{ flex: 1 }}>
+                                            <Slider
+                                                labelText=""
+                                                value={borderRadius}
+                                                min={4}
+                                                max={24}
+                                                step={2}
+                                                onChange={handleBorderRadius}
+                                                hideTextInput
+                                            />
+                                        </div>
+                                        <span style={{ fontSize: '14px', fontWeight: 600, color: '#666' }}>24px</span>
+                                    </div>
+                                    <div style={{ textAlign: 'center', marginTop: '8px', fontSize: '12px', color: '#999' }}>
+                                        {borderRadius}px
+                                    </div>
+                                </SubCard>
+                            </div>
+                        </div>
+                    </PerfectScrollbar>
+                    <Button
+                        kind="ghost"
+                        size="sm"
+                        onClick={handleToggle}
+                        style={{ position: 'absolute', top: '16px', right: '16px' }}
+                    >
+                        Close
+                    </Button>
+                </Layer>
+            )}
         </>
     );
 };

@@ -1,7 +1,3 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Box, Drawer, useMediaQuery } from '@mui/material';
-
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
@@ -18,21 +14,18 @@ import { drawerWidth } from 'store/constant';
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
-    const theme = useTheme();
-    const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-
     const drawer = (
         <>
-            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                <Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
+            <div style={{ display: 'block' }}>
+                <div style={{ display: 'flex', padding: '16px', margin: 'auto' }}>
                     <LogoSection />
-                </Box>
-            </Box>
+                </div>
+            </div>
             <BrowserView>
                 <PerfectScrollbar
                     component="div"
                     style={{
-                        height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
+                        height: 'calc(100vh - 88px)',
                         paddingLeft: '16px',
                         paddingRight: '16px'
                     }}
@@ -42,10 +35,10 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                 </PerfectScrollbar>
             </BrowserView>
             <MobileView>
-                <Box sx={{ px: 2 }}>
+                <div style={{ padding: '0 16px' }}>
                     <MenuList />
                     <MenuCard />
-                </Box>
+                </div>
             </MobileView>
         </>
     );
@@ -53,30 +46,39 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const container = window !== undefined ? () => window.document.body : undefined;
 
     return (
-        <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
-            <Drawer
-                container={container}
-                variant={matchUpMd ? 'persistent' : 'temporary'}
-                anchor="left"
-                open={drawerOpen}
-                onClose={drawerToggle}
-                sx={{
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        background: theme.palette.background.default,
-                        color: theme.palette.text.primary,
-                        borderRight: 'none',
-                        [theme.breakpoints.up('md')]: {
-                            top: '88px'
-                        }
-                    }
+        <nav style={{ flexShrink: 0, width: drawerWidth }} aria-label="mailbox folders">
+            <div
+                style={{
+                    position: drawerOpen ? 'fixed' : 'relative',
+                    left: drawerOpen ? 0 : '-100%',
+                    top: '88px',
+                    width: drawerWidth,
+                    height: 'calc(100vh - 88px)',
+                    backgroundColor: '#ffffff',
+                    color: '#161616',
+                    borderRight: 'none',
+                    transition: 'left 0.3s ease',
+                    zIndex: 1000,
+                    overflowY: 'auto'
                 }}
-                ModalProps={{ keepMounted: true }}
-                color="inherit"
             >
                 {drawer}
-            </Drawer>
-        </Box>
+            </div>
+            {drawerOpen && (
+                <div
+                    onClick={drawerToggle}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 999
+                    }}
+                />
+            )}
+        </nav>
     );
 };
 

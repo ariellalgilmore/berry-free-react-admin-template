@@ -2,46 +2,23 @@ import { useNavigate } from '@remix-run/react';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Chip,
-    ClickAwayListener,
-    Divider,
-    Grid,
-    InputAdornment,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    OutlinedInput,
-    Paper,
-    Popper,
-    Stack,
-    Switch,
-    Typography
-} from '@mui/material';
+// carbon
+import { Button, Search, Toggle, Tag, OverflowMenu, OverflowMenuItem } from '@carbon/react';
+import { UserAvatar, Settings, Logout, User } from '@carbon/icons-react';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import Transitions from 'ui-component/extended/Transitions';
 import UpgradePlanCard from './UpgradePlanCard';
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '../../../../../node_modules/@tabler/icons-react';
 import User1 from 'assets/images/users/user-round.svg';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
-    const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
 
@@ -50,10 +27,8 @@ const ProfileSection = () => {
     const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
-    /**
-     * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     * */
     const anchorRef = useRef(null);
+    
     const handleLogout = async () => {
         console.log('Logout');
     };
@@ -73,6 +48,7 @@ const ProfileSection = () => {
             navigate(route);
         }
     };
+    
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -88,231 +64,186 @@ const ProfileSection = () => {
 
     return (
         <>
-            <Chip
-                sx={{
-                    height: '48px',
-                    alignItems: 'center',
-                    borderRadius: '27px',
-                    transition: 'all .2s ease-in-out',
-                    borderColor: theme.palette.primary.light,
-                    backgroundColor: theme.palette.primary.light,
-                    '&[aria-controls="menu-list-grow"], &:hover': {
-                        borderColor: theme.palette.primary.main,
-                        background: `${theme.palette.primary.main}!important`,
-                        color: theme.palette.primary.light,
-                        '& svg': {
-                            stroke: theme.palette.primary.light
-                        }
-                    },
-                    '& .MuiChip-label': {
-                        lineHeight: 0
-                    }
-                }}
-                icon={
-                    <Avatar
-                        src={User1}
-                        sx={{
-                            ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
-                        }}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        color="inherit"
-                    />
-                }
-                label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
-                variant="outlined"
-                ref={anchorRef}
-                aria-controls={open ? 'menu-list-grow' : undefined}
-                aria-haspopup="true"
+            <Button
+                kind="tertiary"
+                size="md"
                 onClick={handleToggle}
-                color="primary"
-            />
-            <Popper
-                placement="bottom-end"
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                transition
-                disablePortal
-                popperOptions={{
-                    modifiers: [
-                        {
-                            name: 'offset',
-                            options: {
-                                offset: [0, 14]
-                            }
-                        }
-                    ]
+                ref={anchorRef}
+                style={{
+                    height: '48px',
+                    borderRadius: '27px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '0 8px'
                 }}
             >
-                {({ TransitionProps }) => (
-                    <Transitions in={open} {...TransitionProps}>
-                        <Paper>
-                            <ClickAwayListener onClickAway={handleClose}>
-                                <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Box sx={{ p: 2 }}>
-                                        <Stack>
-                                            <Stack direction="row" spacing={0.5} alignItems="center">
-                                                <Typography variant="h4">Good Morning,</Typography>
-                                                <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Johne Doe
-                                                </Typography>
-                                            </Stack>
-                                            <Typography variant="subtitle2">Project Admin</Typography>
-                                        </Stack>
-                                        <OutlinedInput
-                                            sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
-                                            id="input-search-profile"
-                                            value={value}
-                                            onChange={(e) => setValue(e.target.value)}
-                                            placeholder="Search profile options"
-                                            startAdornment={
-                                                <InputAdornment position="start">
-                                                    <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
-                                                </InputAdornment>
-                                            }
-                                            aria-describedby="search-helper-text"
-                                            inputProps={{
-                                                'aria-label': 'weight'
-                                            }}
+                <img
+                    src={User1}
+                    alt="User"
+                    style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%'
+                    }}
+                />
+                <Settings size={24} />
+            </Button>
+            
+            {open && (
+                <>
+                    <div
+                        onClick={handleClose}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            zIndex: 1000
+                        }}
+                    />
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: '88px',
+                            right: '16px',
+                            zIndex: 1001,
+                            backgroundColor: 'white',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+                            width: '350px',
+                            maxHeight: 'calc(100vh - 120px)',
+                            overflow: 'hidden'
+                        }}
+                    >
+                        <div style={{ padding: '16px' }}>
+                            <div style={{ marginBottom: '16px' }}>
+                                <div style={{ fontSize: '18px', fontWeight: 600 }}>
+                                    Good Morning, <span style={{ fontWeight: 400 }}>Johne Doe</span>
+                                </div>
+                                <div style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>
+                                    Project Admin
+                                </div>
+                            </div>
+                            <Search
+                                id="input-search-profile"
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                                placeholder="Search profile options"
+                                labelText=""
+                                size="sm"
+                                style={{ marginBottom: '16px' }}
+                            />
+                            <div style={{ height: '1px', backgroundColor: '#e0e0e0', marginBottom: '16px' }} />
+                        </div>
+                        
+                        <PerfectScrollbar
+                            style={{
+                                height: '100%',
+                                maxHeight: 'calc(100vh - 350px)',
+                                overflowX: 'hidden'
+                            }}
+                        >
+                            <div style={{ padding: '0 16px 16px' }}>
+                                <UpgradePlanCard />
+                                <div style={{ height: '1px', backgroundColor: '#e0e0e0', margin: '16px 0' }} />
+                                
+                                <div style={{
+                                    backgroundColor: '#f4f4f4',
+                                    padding: '16px',
+                                    borderRadius: '8px',
+                                    marginBottom: '16px'
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                        <span style={{ fontSize: '14px' }}>Start DND Mode</span>
+                                        <Toggle
+                                            id="toggle-dnd"
+                                            labelA=""
+                                            labelB=""
+                                            toggled={sdm}
+                                            onToggle={(checked) => setSdm(checked)}
+                                            size="sm"
                                         />
-                                        <Divider />
-                                    </Box>
-                                    <PerfectScrollbar
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span style={{ fontSize: '14px' }}>Allow Notifications</span>
+                                        <Toggle
+                                            id="toggle-notifications"
+                                            labelA=""
+                                            labelB=""
+                                            toggled={notification}
+                                            onToggle={(checked) => setNotification(checked)}
+                                            size="sm"
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <div style={{ height: '1px', backgroundColor: '#e0e0e0', marginBottom: '16px' }} />
+                                
+                                <div>
+                                    <button
+                                        onClick={(event) => handleListItemClick(event, 0, '#')}
                                         style={{
-                                            height: '100%',
-                                            maxHeight: 'calc(100vh - 250px)',
-                                            overflowX: 'hidden'
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            padding: '12px',
+                                            border: 'none',
+                                            background: selectedIndex === 0 ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+                                            borderRadius: `${customization.borderRadius}px`,
+                                            cursor: 'pointer',
+                                            marginBottom: '4px'
                                         }}
                                     >
-                                        <Box sx={{ p: 2 }}>
-                                            <UpgradePlanCard />
-                                            <Divider />
-                                            <Card
-                                                sx={{
-                                                    bgcolor: theme.palette.primary.light,
-                                                    my: 2
-                                                }}
-                                            >
-                                                <CardContent>
-                                                    <Grid container spacing={3} direction="column">
-                                                        <Grid item>
-                                                            <Grid item container alignItems="center" justifyContent="space-between">
-                                                                <Grid item>
-                                                                    <Typography variant="subtitle1">Start DND Mode</Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Switch
-                                                                        color="primary"
-                                                                        checked={sdm}
-                                                                        onChange={(e) => setSdm(e.target.checked)}
-                                                                        name="sdm"
-                                                                        size="small"
-                                                                    />
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <Grid item container alignItems="center" justifyContent="space-between">
-                                                                <Grid item>
-                                                                    <Typography variant="subtitle1">Allow Notifications</Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Switch
-                                                                        checked={notification}
-                                                                        onChange={(e) => setNotification(e.target.checked)}
-                                                                        name="sdm"
-                                                                        size="small"
-                                                                    />
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Grid>
-                                                </CardContent>
-                                            </Card>
-                                            <Divider />
-                                            <List
-                                                component="nav"
-                                                sx={{
-                                                    width: '100%',
-                                                    maxWidth: 350,
-                                                    minWidth: 300,
-                                                    backgroundColor: theme.palette.background.paper,
-                                                    borderRadius: '10px',
-                                                    [theme.breakpoints.down('md')]: {
-                                                        minWidth: '100%'
-                                                    },
-                                                    '& .MuiListItemButton-root': {
-                                                        mt: 0.5
-                                                    }
-                                                }}
-                                            >
-                                                <ListItemButton
-                                                    sx={{
-                                                        borderRadius: `${customization.borderRadius}px`
-                                                    }}
-                                                    selected={selectedIndex === 0}
-                                                    onClick={(event) => handleListItemClick(event, 0, '#')}
-                                                >
-                                                    <ListItemIcon>
-                                                        <IconSettings stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                                                </ListItemButton>
-                                                <ListItemButton
-                                                    sx={{
-                                                        borderRadius: `${customization.borderRadius}px`
-                                                    }}
-                                                    selected={selectedIndex === 1}
-                                                    onClick={(event) => handleListItemClick(event, 1, '#')}
-                                                >
-                                                    <ListItemIcon>
-                                                        <IconUser stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText
-                                                        primary={
-                                                            <Grid container spacing={1} justifyContent="space-between">
-                                                                <Grid item>
-                                                                    <Typography variant="body2">Social Profile</Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Chip
-                                                                        label="02"
-                                                                        size="small"
-                                                                        sx={{
-                                                                            bgcolor: theme.palette.warning.dark,
-                                                                            color: theme.palette.background.default
-                                                                        }}
-                                                                    />
-                                                                </Grid>
-                                                            </Grid>
-                                                        }
-                                                    />
-                                                </ListItemButton>
-                                                <ListItemButton
-                                                    sx={{
-                                                        borderRadius: `${customization.borderRadius}px`
-                                                    }}
-                                                    selected={selectedIndex === 4}
-                                                    onClick={handleLogout}
-                                                >
-                                                    <ListItemIcon>
-                                                        <IconLogout stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
-                                                </ListItemButton>
-                                            </List>
-                                        </Box>
-                                    </PerfectScrollbar>
-                                </MainCard>
-                            </ClickAwayListener>
-                        </Paper>
-                    </Transitions>
-                )}
-            </Popper>
+                                        <Settings size={20} />
+                                        <span style={{ fontSize: '14px' }}>Account Settings</span>
+                                    </button>
+                                    
+                                    <button
+                                        onClick={(event) => handleListItemClick(event, 1, '#')}
+                                        style={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            padding: '12px',
+                                            border: 'none',
+                                            background: selectedIndex === 1 ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+                                            borderRadius: `${customization.borderRadius}px`,
+                                            cursor: 'pointer',
+                                            marginBottom: '4px'
+                                        }}
+                                    >
+                                        <User size={20} />
+                                        <span style={{ fontSize: '14px', flex: 1, textAlign: 'left' }}>Social Profile</span>
+                                        <Tag type="red" size="sm">02</Tag>
+                                    </button>
+                                    
+                                    <button
+                                        onClick={handleLogout}
+                                        style={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            padding: '12px',
+                                            border: 'none',
+                                            background: selectedIndex === 4 ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+                                            borderRadius: `${customization.borderRadius}px`,
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        <Logout size={20} />
+                                        <span style={{ fontSize: '14px' }}>Logout</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </PerfectScrollbar>
+                    </div>
+                </>
+            )}
         </>
     );
 };

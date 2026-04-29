@@ -1,3 +1,18 @@
+// ==============================|| CARBON FOUNDATION ||============================== //
+// LAYER 1 — Token imports (spacing, theme, type, breakpoint)
+@use '@carbon/react/scss/spacing' as *;
+@use '@carbon/react/scss/theme' as *;
+@use '@carbon/react/scss/type' as *;
+@use '@carbon/react/scss/breakpoint' as *;
+
+// LAYER 2 — Component styles (MANDATORY — without this, all Carbon components render unstyled)
+@use '@carbon/react';
+
+// IBM Plex font configuration
+$font-path: '@ibm/plex';
+
+// ==============================|| ORIGINAL STYLES ||============================== //
+
 // color variants
 @use 'sass:meta';
 

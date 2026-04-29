@@ -1,78 +1,28 @@
-// material-ui
-import { styled, useTheme } from '@mui/material/styles';
-import {
-    Avatar,
-    Card,
-    CardContent,
-    Grid,
-    LinearProgress,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography,
-    linearProgressClasses
-} from '@mui/material';
+// carbon
+import { Tile, ProgressBar } from '@carbon/react';
+import { Table } from '@carbon/icons-react';
 
 // types
 import PropTypes from 'prop-types';
 
-// assets
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
-
-// styles
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 10,
-    borderRadius: 30,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-        backgroundColor: '#fff'
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-        borderRadius: 5,
-        backgroundColor: theme.palette.primary.main
-    }
-}));
-
-const CardStyle = styled(Card)(({ theme }) => ({
-    background: theme.palette.primary.light,
-    marginBottom: '22px',
-    overflow: 'hidden',
-    position: 'relative',
-    '&:after': {
-        content: '""',
-        position: 'absolute',
-        width: '157px',
-        height: '157px',
-        background: theme.palette.primary[200],
-        borderRadius: '50%',
-        top: '-105px',
-        right: '-96px'
-    }
-}));
-
 // ==============================|| PROGRESS BAR WITH LABEL ||============================== //
 
 function LinearProgressWithLabel({ value, ...others }) {
-    const theme = useTheme();
-
     return (
-        <Grid container direction="column" spacing={1} sx={{ mt: 1.5 }}>
-            <Grid item>
-                <Grid container justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h6" sx={{ color: theme.palette.primary[800] }}>
-                            Progress
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="h6" color="inherit">{`${Math.round(value)}%`}</Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item>
-                <BorderLinearProgress variant="determinate" value={value} {...others} />
-            </Grid>
-        </Grid>
+        <div style={{ marginTop: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#0f62fe' }}>
+                    Progress
+                </span>
+                <span style={{ fontSize: '14px', fontWeight: 600 }}>{`${Math.round(value)}%`}</span>
+            </div>
+            <ProgressBar
+                value={value}
+                max={100}
+                size="sm"
+                {...others}
+            />
+        </div>
     );
 }
 
@@ -83,43 +33,54 @@ LinearProgressWithLabel.propTypes = {
 // ==============================|| SIDEBAR MENU Card ||============================== //
 
 const MenuCard = () => {
-    const theme = useTheme();
-
     return (
-        <CardStyle>
-            <CardContent sx={{ p: 2 }}>
-                <List sx={{ p: 0, m: 0 }}>
-                    <ListItem alignItems="flex-start" disableGutters sx={{ p: 0 }}>
-                        <ListItemAvatar sx={{ mt: 0 }}>
-                            <Avatar
-                                variant="rounded"
-                                sx={{
-                                    ...theme.typography.commonAvatar,
-                                    ...theme.typography.largeAvatar,
-                                    color: theme.palette.primary.main,
-                                    border: 'none',
-                                    borderColor: theme.palette.primary.main,
-                                    background: '#fff',
-                                    marginRight: '12px'
-                                }}
-                            >
-                                <TableChartOutlinedIcon fontSize="inherit" />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            sx={{ mt: 0 }}
-                            primary={
-                                <Typography variant="subtitle1" sx={{ color: theme.palette.primary[800] }}>
-                                    Get Extra Space
-                                </Typography>
-                            }
-                            secondary={<Typography variant="caption"> 28/23 GB</Typography>}
-                        />
-                    </ListItem>
-                </List>
+        <Tile
+            style={{
+                backgroundColor: '#e5f6ff',
+                marginBottom: '22px',
+                position: 'relative',
+                overflow: 'hidden',
+                padding: '16px'
+            }}
+        >
+            <div style={{
+                position: 'absolute',
+                width: '157px',
+                height: '157px',
+                backgroundColor: '#bae6ff',
+                borderRadius: '50%',
+                top: '-105px',
+                right: '-96px'
+            }} />
+            <div style={{ position: 'relative', zIndex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '8px' }}>
+                    <div
+                        style={{
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '8px',
+                            backgroundColor: '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: '12px',
+                            flexShrink: 0
+                        }}
+                    >
+                        <Table size={24} style={{ color: '#0f62fe' }} />
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f62fe', marginBottom: '4px' }}>
+                            Get Extra Space
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#525252' }}>
+                            28/23 GB
+                        </div>
+                    </div>
+                </div>
                 <LinearProgressWithLabel value={80} />
-            </CardContent>
-        </CardStyle>
+            </div>
+        </Tile>
     );
 };
 

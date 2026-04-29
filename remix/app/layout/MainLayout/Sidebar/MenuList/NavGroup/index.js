@@ -1,7 +1,3 @@
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Divider, List, Typography } from '@mui/material';
-
 // project imports
 import NavItem from '../NavItem';
 import NavCollapse from '../NavCollapse';
@@ -12,8 +8,6 @@ import PropTypes from 'prop-types';
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
 const NavGroup = ({ item }) => {
-    const theme = useTheme();
-
     // menu list collapse & items
     const items = item.children?.map((menu) => {
         switch (menu.type) {
@@ -23,34 +17,57 @@ const NavGroup = ({ item }) => {
                 return <NavItem key={menu.id} item={menu} level={1} />;
             default:
                 return (
-                    <Typography key={menu.id} variant="h6" color="error" align="center">
+                    <div key={menu.id} style={{ 
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        color: '#da1e28',
+                        textAlign: 'center',
+                        padding: '8px'
+                    }}>
                         Menu Items Error
-                    </Typography>
+                    </div>
                 );
         }
     });
 
     return (
         <>
-            <List
-                subheader={
-                    item.title && (
-                        <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-                            {item.title}
-                            {item.caption && (
-                                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                                    {item.caption}
-                                </Typography>
-                            )}
-                        </Typography>
-                    )
-                }
-            >
-                {items}
-            </List>
+            <div>
+                {item.title && (
+                    <div style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        color: '#666',
+                        padding: '8px 16px',
+                        marginTop: '8px'
+                    }}>
+                        {item.title}
+                        {item.caption && (
+                            <div style={{
+                                fontSize: '11px',
+                                fontWeight: 400,
+                                textTransform: 'none',
+                                color: '#999',
+                                marginTop: '4px'
+                            }}>
+                                {item.caption}
+                            </div>
+                        )}
+                    </div>
+                )}
+                <div>
+                    {items}
+                </div>
+            </div>
 
             {/* group divider */}
-            <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+            <div style={{ 
+                height: '1px',
+                backgroundColor: '#e0e0e0',
+                marginTop: '4px',
+                marginBottom: '16px'
+            }} />
         </>
     );
 };

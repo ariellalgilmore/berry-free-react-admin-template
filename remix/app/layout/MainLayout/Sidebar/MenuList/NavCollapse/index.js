@@ -2,9 +2,8 @@ import { useLocation } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+// carbon
+import { ChevronDown, ChevronUp, CircleFilled } from '@carbon/icons-react';
 
 // project imports
 import NavItem from '../NavItem';
@@ -12,14 +11,9 @@ import NavItem from '../NavItem';
 // types
 import PropTypes from 'prop-types';
 
-// assets
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { IconChevronDown, IconChevronUp } from '../../../../../../node_modules/@tabler/icons-react';
-
 // ==============================|| SIDEBAR MENU LIST COLLAPSE ITEMS ||============================== //
 
 const NavCollapse = ({ menu, level }) => {
-    const theme = useTheme();
     const customization = useSelector((state) => state.customization);
 
     const [open, setOpen] = useState(false);
@@ -68,9 +62,15 @@ const NavCollapse = ({ menu, level }) => {
                 return <NavItem key={item.id} item={item} level={level + 1} />;
             default:
                 return (
-                    <Typography key={item.id} variant="h6" color="error" align="center">
+                    <div key={item.id} style={{ 
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        color: '#da1e28',
+                        textAlign: 'center',
+                        padding: '8px'
+                    }}>
                         Menu Items Error
-                    </Typography>
+                    </div>
                 );
         }
     });
@@ -79,71 +79,74 @@ const NavCollapse = ({ menu, level }) => {
     const menuIcon = menu.icon ? (
         <Icon strokeWidth={1.5} size="1.3rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
     ) : (
-        <FiberManualRecordIcon
-            sx={{
-                width: selected === menu.id ? 8 : 6,
-                height: selected === menu.id ? 8 : 6
-            }}
-            fontSize={level > 0 ? 'inherit' : 'medium'}
+        <CircleFilled
+            size={selected === menu.id ? 8 : 6}
         />
     );
 
     return (
         <>
-            <ListItemButton
-                sx={{
-                    borderRadius: `${customization.borderRadius}px`,
-                    mb: 0.5,
-                    alignItems: 'flex-start',
-                    backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                    py: level > 1 ? 1 : 1.25,
-                    pl: `${level * 24}px`
-                }}
-                selected={selected === menu.id}
+            <button
                 onClick={handleClick}
+                style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    width: '100%',
+                    border: 'none',
+                    background: selected === menu.id ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+                    borderRadius: `${customization.borderRadius}px`,
+                    marginBottom: '4px',
+                    padding: level > 1 ? '8px' : '10px',
+                    paddingLeft: `${level * 24}px`,
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                }}
             >
-                <ListItemIcon sx={{ my: 'auto', minWidth: !menu.icon ? 18 : 36 }}>{menuIcon}</ListItemIcon>
-                <ListItemText
-                    primary={
-                        <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }}>
-                            {menu.title}
-                        </Typography>
-                    }
-                    secondary={
-                        menu.caption && (
-                            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                                {menu.caption}
-                            </Typography>
-                        )
-                    }
-                />
-                {open ? (
-                    <IconChevronUp stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
-                ) : (
-                    <IconChevronDown stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
-                )}
-            </ListItemButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <List
-                    component="div"
-                    disablePadding
-                    sx={{
-                        position: 'relative',
-                        '&:after': {
-                            content: "''",
-                            position: 'absolute',
-                            left: '32px',
-                            top: 0,
-                            height: '100%',
-                            width: '1px',
-                            opacity: 1,
-                            background: theme.palette.primary.light
-                        }
-                    }}
-                >
+                <div style={{ minWidth: !menu.icon ? 18 : 36, marginTop: 'auto', marginBottom: 'auto' }}>
+                    {menuIcon}
+                </div>
+                <div style={{ flex: 1, marginTop: 'auto', marginBottom: 'auto' }}>
+                    <div style={{ 
+                        fontSize: selected === menu.id ? '16px' : '14px',
+                        fontWeight: selected === menu.id ? 600 : 400,
+                        color: 'inherit'
+                    }}>
+                        {menu.title}
+                    </div>
+                    {menu.caption && (
+                        <div style={{ 
+                            fontSize: '12px',
+                            color: '#666',
+                            marginTop: '4px'
+                        }}>
+                            {menu.caption}
+                        </div>
+                    )}
+                </div>
+                <div style={{ marginTop: 'auto', marginBottom: 'auto' }}>
+                    {open ? (
+                        <ChevronUp size={16} />
+                    ) : (
+                        <ChevronDown size={16} />
+                    )}
+                </div>
+            </button>
+            {open && (
+                <div style={{
+                    position: 'relative',
+                    paddingLeft: '0'
+                }}>
+                    <div style={{
+                        position: 'absolute',
+                        left: '32px',
+                        top: 0,
+                        height: '100%',
+                        width: '1px',
+                        backgroundColor: '#e0e0e0'
+                    }} />
                     {menus}
-                </List>
-            </Collapse>
+                </div>
+            )}
         </>
     );
 };

@@ -1,6 +1,3 @@
-// material-ui
-import { Typography } from '@mui/material';
-
 // project imports
 import NavGroup from './NavGroup';
 import menuItems from 'menu-items';
@@ -14,9 +11,15 @@ const MenuList = () => {
                 return <NavGroup key={item.id} item={item} />;
             default:
                 return (
-                    <Typography key={item.id} variant="h6" color="error" align="center">
+                    <div key={item.id} style={{ 
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        color: '#da1e28',
+                        textAlign: 'center',
+                        padding: '8px'
+                    }}>
                         Menu Items Error
-                    </Typography>
+                    </div>
                 );
         }
     });
