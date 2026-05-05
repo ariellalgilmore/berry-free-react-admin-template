@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Card, Grid, Typography } from '@mui/material';
+// carbon
+import { Tile } from '@carbon/react';
 
 // project imports
 import chartData from './chart-data/bajaj-area-chart';
@@ -15,11 +14,10 @@ import Chart from 'react-apexcharts';
 // ===========================|| DASHBOARD DEFAULT - BAJAJ AREA CHART CARD ||=========================== //
 
 const BajajAreaChartCard = () => {
-    const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const { navType } = customization;
 
-    const orangeDark = theme.palette.secondary[800];
+    const orangeDark = '#ff6b35';
 
     useEffect(() => {
         const newSupportChart = {
@@ -33,30 +31,22 @@ const BajajAreaChartCard = () => {
     }, [navType, orangeDark]);
 
     return (
-        <Card sx={{ bgcolor: 'secondary.light' }}>
-            <Grid container sx={{ p: 2, pb: 0, color: '#fff' }}>
-                <Grid item xs={12}>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="subtitle1" sx={{ color: theme.palette.secondary.dark }}>
-                                Bajaj Finery
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="h4" sx={{ color: theme.palette.grey[800] }}>
-                                $1839.00
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.grey[800] }}>
-                        10% Profit
-                    </Typography>
-                </Grid>
-            </Grid>
+        <Tile style={{ backgroundColor: 'var(--cds-layer-02)' }}>
+            <div style={{ padding: 'var(--cds-spacing-05)', paddingBottom: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--cds-spacing-03)' }}>
+                    <p className="cds--label" style={{ color: 'var(--cds-text-primary)' }}>
+                        Bajaj Finery
+                    </p>
+                    <h4 className="cds--heading-04" style={{ color: 'var(--cds-text-primary)' }}>
+                        $1839.00
+                    </h4>
+                </div>
+                <p style={{ fontSize: '0.875rem', color: 'var(--cds-text-secondary)', margin: 0 }}>
+                    10% Profit
+                </p>
+            </div>
             <Chart {...chartData} />
-        </Card>
+        </Tile>
     );
 };
 

@@ -1,92 +1,87 @@
-// material-ui
-import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+// carbon
+import { Storefront } from '@carbon/icons-react';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
-// assets
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
-
 // types
 import PropTypes from 'prop-types';
 
 // styles
-const CardWrapper = styled(MainCard)(({ theme }) => ({
-    overflow: 'hidden',
-    position: 'relative',
-    '&:after': {
-        content: '""',
-        position: 'absolute',
-        width: 210,
-        height: 210,
-        background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
-        borderRadius: '50%',
-        top: -30,
-        right: -180
-    },
-    '&:before': {
-        content: '""',
-        position: 'absolute',
-        width: 210,
-        height: 210,
-        background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
-        borderRadius: '50%',
-        top: -160,
-        right: -130
-    }
-}));
+const CardWrapper = ({ children, ...props }) => (
+    <MainCard 
+        border={false} 
+        content={false}
+        sx={{
+            overflow: 'hidden',
+            position: 'relative',
+            '&:after': {
+                content: '""',
+                position: 'absolute',
+                width: '210px',
+                height: '210px',
+                background: 'linear-gradient(210.04deg, var(--cds-support-warning) -50.94%, rgba(144, 202, 249, 0) 83.49%)',
+                top: '-30px',
+                right: '-180px'
+            },
+            '&:before': {
+                content: '""',
+                position: 'absolute',
+                width: '210px',
+                height: '210px',
+                background: 'linear-gradient(140.9deg, var(--cds-support-warning) -14.02%, rgba(144, 202, 249, 0) 70.50%)',
+                top: '-160px',
+                right: '-130px'
+            }
+        }}
+        {...props}
+    >
+        {children}
+    </MainCard>
+);
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
 const TotalIncomeLightCard = ({ isLoading }) => {
-    const theme = useTheme();
-
     return (
         <>
             {isLoading ? (
                 <TotalIncomeCard />
             ) : (
-                <CardWrapper border={false} content={false}>
-                    <Box sx={{ p: 2 }}>
-                        <List sx={{ py: 0 }}>
-                            <ListItem alignItems="center" disableGutters sx={{ py: 0 }}>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        variant="rounded"
-                                        sx={{
-                                            ...theme.typography.commonAvatar,
-                                            ...theme.typography.largeAvatar,
-                                            backgroundColor: theme.palette.warning.light,
-                                            color: theme.palette.warning.dark
-                                        }}
-                                    >
-                                        <StorefrontTwoToneIcon fontSize="inherit" />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    sx={{
-                                        py: 0,
-                                        mt: 0.45,
-                                        mb: 0.45
-                                    }}
-                                    primary={<Typography variant="h4">$203k</Typography>}
-                                    secondary={
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{
-                                                color: theme.palette.grey[500],
-                                                mt: 0.5
-                                            }}
-                                        >
-                                            Total Income
-                                        </Typography>
-                                    }
-                                />
-                            </ListItem>
-                        </List>
-                    </Box>
+                <CardWrapper>
+                    <div style={{ padding: 'var(--cds-spacing-05)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--cds-spacing-05)' }}>
+                            <div style={{ 
+                                width: '48px', 
+                                height: '48px', 
+                                backgroundColor: 'var(--cds-support-warning-inverse)', 
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'var(--cds-support-warning)'
+                            }}>
+                                <Storefront size={24} />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <h4 style={{ 
+                                    fontSize: '1.5rem', 
+                                    fontWeight: 500, 
+                                    margin: 0,
+                                    marginBottom: 'var(--cds-spacing-02)'
+                                }}>
+                                    $203k
+                                </h4>
+                                <p style={{ 
+                                    fontSize: '0.875rem', 
+                                    color: 'var(--cds-text-secondary)',
+                                    margin: 0
+                                }}>
+                                    Total Income
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </CardWrapper>
             )}
         </>

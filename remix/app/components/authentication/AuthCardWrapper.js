@@ -1,6 +1,3 @@
-// material-ui
-import { Box } from '@mui/material';
-
 // project import
 import MainCard from 'ui-component/cards/MainCard';
 
@@ -22,7 +19,7 @@ const AuthCardWrapper = ({ children, ...other }) => (
         content={false}
         {...other}
     >
-        <Box sx={{ p: { xs: 2, sm: 3, xl: 5 } }}>{children}</Box>
+        <div style={{ padding: 'var(--cds-spacing-05)' }}>{children}</div>
     </MainCard>
 );
 

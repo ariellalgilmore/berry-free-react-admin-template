@@ -2,25 +2,8 @@ import { Link } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField,
-    Typography,
-    useMediaQuery
-} from '@mui/material';
+// carbon
+import { Button, TextInput, PasswordInput, Checkbox, Grid, Column } from '@carbon/react';
 
 // third party
 import * as Yup from 'yup';
@@ -32,16 +15,10 @@ import Google from 'assets/images/icons/social-google.svg';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
-// assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others }) => {
-    const theme = useTheme();
     const scriptedRef = useScriptRef();
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
@@ -51,14 +28,6 @@ const FirebaseRegister = ({ ...others }) => {
 
     const googleHandler = async () => {
         console.error('Register');
-    };
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
     };
 
     const changePassword = (value) => {
@@ -73,55 +42,32 @@ const FirebaseRegister = ({ ...others }) => {
 
     return (
         <>
-            <Grid container direction="column" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
+            <Grid>
+                <Column sm={4} md={8} lg={16}>
                     <AnimateButton>
                         <Button
-                            variant="outlined"
-                            fullWidth
+                            kind="tertiary"
                             onClick={googleHandler}
-                            size="large"
-                            sx={{
-                                color: 'grey.700',
-                                backgroundColor: theme.palette.grey[50],
-                                borderColor: theme.palette.grey[100]
-                            }}
+                            size="lg"
+                            style={{ width: '100%' }}
                         >
-                            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-                            </Box>
+                            <img src={Google} alt="google" width={16} height={16} style={{ marginRight: 8 }} />
                             Sign up with Google
                         </Button>
                     </AnimateButton>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box sx={{ alignItems: 'center', display: 'flex' }}>
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                cursor: 'unset',
-                                m: 2,
-                                py: 0.5,
-                                px: 7,
-                                borderColor: `${theme.palette.grey[100]} !important`,
-                                color: `${theme.palette.grey[900]}!important`,
-                                fontWeight: 500,
-                                borderRadius: `${customization.borderRadius}px`
-                            }}
-                            disableRipple
-                            disabled
-                        >
-                            OR
-                        </Button>
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container alignItems="center" justifyContent="center">
-                    <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign up with Email address</Typography>
-                    </Box>
-                </Grid>
+                </Column>
+                <Column sm={4} md={8} lg={16}>
+                    <div style={{ display: 'flex', alignItems: 'center', margin: 'var(--cds-spacing-05) 0' }}>
+                        <hr style={{ flexGrow: 1, border: 'none', borderTop: '1px solid var(--cds-border-subtle-01)' }} />
+                        <span style={{ margin: '0 var(--cds-spacing-05)', color: 'var(--cds-text-secondary)' }}>OR</span>
+                        <hr style={{ flexGrow: 1, border: 'none', borderTop: '1px solid var(--cds-border-subtle-01)' }} />
+                    </div>
+                </Column>
+                <Column sm={4} md={8} lg={16}>
+                    <div style={{ marginBottom: 'var(--cds-spacing-05)', textAlign: 'center' }}>
+                        <p className="cds--label">Sign up with Email address</p>
+                    </div>
+                </Column>
             </Grid>
 
             <Formik
@@ -152,150 +98,109 @@ const FirebaseRegister = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <Grid container spacing={matchDownSM ? 0 : 2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    fullWidth
-                                    label="First Name"
-                                    margin="normal"
+                        <Grid>
+                            <Column sm={2} md={4} lg={8}>
+                                <TextInput
+                                    id="fname"
+                                    labelText="First Name"
                                     name="fname"
                                     type="text"
                                     defaultValue=""
-                                    sx={{ ...theme.typography.customInput }}
+                                    style={{ marginBottom: 'var(--cds-spacing-05)' }}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Last Name"
-                                    margin="normal"
+                            </Column>
+                            <Column sm={2} md={4} lg={8}>
+                                <TextInput
+                                    id="lname"
+                                    labelText="Last Name"
                                     name="lname"
                                     type="text"
                                     defaultValue=""
-                                    sx={{ ...theme.typography.customInput }}
+                                    style={{ marginBottom: 'var(--cds-spacing-05)' }}
                                 />
-                            </Grid>
+                            </Column>
                         </Grid>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-email-register"
-                                type="email"
-                                value={values.email}
-                                name="email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                inputProps={{}}
-                            />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text--register">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
+                        
+                        <TextInput
+                            id="outlined-adornment-email-register"
+                            labelText="Email Address / Username"
+                            type="email"
+                            value={values.email}
+                            name="email"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            invalid={Boolean(touched.email && errors.email)}
+                            invalidText={touched.email && errors.email ? errors.email : ''}
+                            style={{ marginBottom: 'var(--cds-spacing-05)' }}
+                        />
 
-                        <FormControl
-                            fullWidth
-                            error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password-register"
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                name="password"
-                                label="Password"
-                                onBlur={handleBlur}
-                                onChange={(e) => {
-                                    handleChange(e);
-                                    changePassword(e.target.value);
-                                }}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            size="large"
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                inputProps={{}}
-                            />
-                            {touched.password && errors.password && (
-                                <FormHelperText error id="standard-weight-helper-text-password-register">
-                                    {errors.password}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
+                        <PasswordInput
+                            id="outlined-adornment-password-register"
+                            labelText="Password"
+                            value={values.password}
+                            name="password"
+                            onBlur={handleBlur}
+                            onChange={(e) => {
+                                handleChange(e);
+                                changePassword(e.target.value);
+                            }}
+                            invalid={Boolean(touched.password && errors.password)}
+                            invalidText={touched.password && errors.password ? errors.password : ''}
+                            showPasswordLabel="Show password"
+                            hidePasswordLabel="Hide password"
+                            style={{ marginBottom: 'var(--cds-spacing-05)' }}
+                        />
 
                         {strength !== 0 && (
-                            <FormControl fullWidth>
-                                <Box sx={{ mb: 2 }}>
-                                    <Grid container spacing={2} alignItems="center">
-                                        <Grid item>
-                                            <Box
-                                                style={{ backgroundColor: level?.color }}
-                                                sx={{ width: 85, height: 8, borderRadius: '7px' }}
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="subtitle1" fontSize="0.75rem">
-                                                {level?.label}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </FormControl>
+                            <div style={{ marginBottom: 'var(--cds-spacing-05)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--cds-spacing-03)' }}>
+                                    <div
+                                        style={{ 
+                                            backgroundColor: level?.color, 
+                                            width: '85px', 
+                                            height: '8px'
+                                        }}
+                                    />
+                                    <span style={{ fontSize: '0.75rem' }}>{level?.label}</span>
+                                </div>
+                            </div>
                         )}
 
-                        <Grid container alignItems="center" justifyContent="space-between">
-                            <Grid item>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={checked}
-                                            onChange={(event) => setChecked(event.target.checked)}
-                                            name="checked"
-                                            color="primary"
-                                        />
-                                    }
-                                    label={
-                                        <Typography variant="subtitle1">
-                                            Agree with &nbsp;
-                                            <Typography variant="subtitle1" component={Link} to="#">
-                                                Terms & Condition.
-                                            </Typography>
-                                        </Typography>
-                                    }
-                                />
-                            </Grid>
-                        </Grid>
+                        <div style={{ marginBottom: 'var(--cds-spacing-05)' }}>
+                            <Checkbox
+                                id="terms-checkbox"
+                                labelText={
+                                    <span>
+                                        Agree with{' '}
+                                        <Link to="#" style={{ color: 'var(--cds-link-primary)' }}>
+                                            Terms & Condition.
+                                        </Link>
+                                    </span>
+                                }
+                                checked={checked}
+                                onChange={(event) => setChecked(event.target.checked)}
+                            />
+                        </div>
+                        
                         {errors.submit && (
-                            <Box sx={{ mt: 3 }}>
-                                <FormHelperText error>{errors.submit}</FormHelperText>
-                            </Box>
+                            <div style={{ marginTop: 'var(--cds-spacing-05)', color: 'var(--cds-text-error)' }}>
+                                {errors.submit}
+                            </div>
                         )}
 
-                        <Box sx={{ mt: 2 }}>
+                        <div style={{ marginTop: 'var(--cds-spacing-05)' }}>
                             <AnimateButton>
                                 <Button
-                                    disableElevation
                                     disabled={isSubmitting}
-                                    fullWidth
-                                    size="large"
+                                    size="lg"
                                     type="submit"
-                                    variant="contained"
-                                    color="secondary"
+                                    kind="primary"
+                                    style={{ width: '100%' }}
                                 >
                                     Sign up
                                 </Button>
                             </AnimateButton>
-                        </Box>
+                        </div>
                     </form>
                 )}
             </Formik>

@@ -1,25 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Stack,
-    Typography,
-    useMediaQuery
-} from '@mui/material';
+// carbon
+import { Button, TextInput, PasswordInput, Checkbox, Grid, Column } from '@carbon/react';
+import { View, ViewOff } from '@carbon/icons-react';
 
 // third party
 import * as Yup from 'yup';
@@ -30,17 +14,12 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import Google from 'assets/images/icons/social-google.svg';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
-    const theme = useTheme();
     const scriptedRef = useScriptRef();
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
     const [checked, setChecked] = useState(true);
 
@@ -49,73 +28,35 @@ const FirebaseLogin = ({ ...others }) => {
     };
 
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
 
     return (
         <>
-            <Grid container direction="column" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
+            <Grid>
+                <Column sm={4} md={8} lg={16}>
                     <AnimateButton>
                         <Button
-                            disableElevation
-                            fullWidth
+                            kind="tertiary"
                             onClick={googleHandler}
-                            size="large"
-                            variant="outlined"
-                            sx={{
-                                color: 'grey.700',
-                                backgroundColor: theme.palette.grey[50],
-                                borderColor: theme.palette.grey[100]
-                            }}
+                            size="lg"
+                            style={{ width: '100%' }}
                         >
-                            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-                            </Box>
+                            <img src={Google} alt="google" width={16} height={16} style={{ marginRight: 8 }} />
                             Sign in with Google
                         </Button>
                     </AnimateButton>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            display: 'flex'
-                        }}
-                    >
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                cursor: 'unset',
-                                m: 2,
-                                py: 0.5,
-                                px: 7,
-                                borderColor: `${theme.palette.grey[100]} !important`,
-                                color: `${theme.palette.grey[900]}!important`,
-                                fontWeight: 500,
-                                borderRadius: `${customization.borderRadius}px`
-                            }}
-                            disableRipple
-                            disabled
-                        >
-                            OR
-                        </Button>
-
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container alignItems="center" justifyContent="center">
-                    <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign in with Email address</Typography>
-                    </Box>
-                </Grid>
+                </Column>
+                <Column sm={4} md={8} lg={16}>
+                    <div style={{ display: 'flex', alignItems: 'center', margin: 'var(--cds-spacing-05) 0' }}>
+                        <hr style={{ flexGrow: 1, border: 'none', borderTop: '1px solid var(--cds-border-subtle-01)' }} />
+                        <span style={{ margin: '0 var(--cds-spacing-05)', color: 'var(--cds-text-secondary)' }}>OR</span>
+                        <hr style={{ flexGrow: 1, border: 'none', borderTop: '1px solid var(--cds-border-subtle-01)' }} />
+                    </div>
+                </Column>
+                <Column sm={4} md={8} lg={16}>
+                    <div style={{ marginBottom: 'var(--cds-spacing-05)', textAlign: 'center' }}>
+                        <p className="cds--label">Sign in with Email address</p>
+                    </div>
+                </Column>
             </Grid>
 
             <Formik
@@ -146,97 +87,64 @@ const FirebaseLogin = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-email-login"
-                                type="email"
-                                value={values.email}
-                                name="email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                label="Email Address / Username"
-                                inputProps={{}}
-                            />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-login">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
+                        <TextInput
+                            id="outlined-adornment-email-login"
+                            labelText="Email Address / Username"
+                            type="email"
+                            value={values.email}
+                            name="email"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            invalid={Boolean(touched.email && errors.email)}
+                            invalidText={touched.email && errors.email ? errors.email : ''}
+                            style={{ marginBottom: 'var(--cds-spacing-05)' }}
+                        />
 
-                        <FormControl
-                            fullWidth
-                            error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password-login"
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                name="password"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            size="large"
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password"
-                                inputProps={{}}
+                        <PasswordInput
+                            id="outlined-adornment-password-login"
+                            labelText="Password"
+                            value={values.password}
+                            name="password"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            invalid={Boolean(touched.password && errors.password)}
+                            invalidText={touched.password && errors.password ? errors.password : ''}
+                            showPasswordLabel="Show password"
+                            hidePasswordLabel="Hide password"
+                            style={{ marginBottom: 'var(--cds-spacing-05)' }}
+                        />
+                        
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--cds-spacing-05)' }}>
+                            <Checkbox
+                                id="remember-me"
+                                labelText="Remember me"
+                                checked={checked}
+                                onChange={(event) => setChecked(event.target.checked)}
                             />
-                            {touched.password && errors.password && (
-                                <FormHelperText error id="standard-weight-helper-text-password-login">
-                                    {errors.password}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={checked}
-                                        onChange={(event) => setChecked(event.target.checked)}
-                                        name="checked"
-                                        color="primary"
-                                    />
-                                }
-                                label="Remember me"
-                            />
-                            <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+                            <a href="#" style={{ color: 'var(--cds-link-primary)', textDecoration: 'none', cursor: 'pointer' }}>
                                 Forgot Password?
-                            </Typography>
-                        </Stack>
+                            </a>
+                        </div>
+                        
                         {errors.submit && (
-                            <Box sx={{ mt: 3 }}>
-                                <FormHelperText error>{errors.submit}</FormHelperText>
-                            </Box>
+                            <div style={{ marginTop: 'var(--cds-spacing-05)', color: 'var(--cds-text-error)' }}>
+                                {errors.submit}
+                            </div>
                         )}
 
-                        <Box sx={{ mt: 2 }}>
+                        <div style={{ marginTop: 'var(--cds-spacing-05)' }}>
                             <AnimateButton>
                                 <Button
-                                    disableElevation
                                     disabled={isSubmitting}
-                                    fullWidth
-                                    size="large"
+                                    size="lg"
                                     type="submit"
-                                    variant="contained"
-                                    color="secondary"
+                                    kind="primary"
+                                    style={{ width: '100%' }}
                                 >
                                     Sign in
                                 </Button>
                             </AnimateButton>
-                        </Box>
+                        </div>
                     </form>
                 )}
             </Formik>

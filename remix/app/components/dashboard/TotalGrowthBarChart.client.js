@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-
 // third-party
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
@@ -17,19 +14,17 @@ import PropTypes from 'prop-types';
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 const TotalGrowthBarChart = ({ isLoading }) => {
-    const theme = useTheme();
     const customization = useSelector((state) => state.customization);
 
     const { navType } = customization;
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const grey500 = theme.palette.grey[500];
+    const primary = '#161616';
+    const grey200 = '#e0e0e0';
+    const grey500 = '#8d8d8d';
 
-    const primary200 = theme.palette.primary[200];
-    const primaryDark = theme.palette.primary.dark;
-    const secondaryMain = theme.palette.secondary.main;
-    const secondaryLight = theme.palette.secondary.light;
+    const primary200 = '#78a9ff';
+    const primaryDark = '#0043ce';
+    const secondaryMain = '#ff6b35';
+    const secondaryLight = '#ffb3a1';
 
     useEffect(() => {
         const newChartData = {
@@ -66,7 +61,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
         if (!isLoading) {
             ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
         }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, grey200, isLoading, grey500]);
 
     return (
         <>
